@@ -267,7 +267,7 @@ def find_best_shift_for_group(group, group_number):
        chi_square_list.append(chisquare)
        chisquare = 0
     # get the five best shifts which are the three smallest chi_square values indexes
-    best_shifts = np.argsort(chi_square_list)[:2]
+    best_shifts = np.argsort(chi_square_list)[:1]
     # print(f"\nGroup number: {group_number}, best shifts: {best_shifts}")
     # print(f"\nChi square values: {chi_square_list}")
     # best_shift = chi_square_list.index(min(chi_square_list))
