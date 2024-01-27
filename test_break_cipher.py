@@ -11,12 +11,12 @@ def test_break_cipher(text, key):
     encrypted_text = encrypt.vigenere_encrypt(text, key)
     
     # Attempt to break the cipher
-    best_shifts = break2.get_best_shifts_for_all_groups(encrypted_text,max_16_char_long_key)
-    best_shifts = [item for sublist in best_shifts for item in sublist]
-    found_key = break2.from_numbers_to_alphabet(best_shifts)
-    # best_key_length=break2.find_best_key_length_based_on_ic(encrypted_text,break2.find_potential_key_lengths(text,max_16_char_long_key))
-    # print("best_key_length",best_key_length)
-    # found_key=break2.find_best_key(encrypted_text,best_key_length)
+    # best_shifts = break2.get_best_shifts_for_all_groups(encrypted_text,max_16_char_long_key)
+    # best_shifts = [item for sublist in best_shifts for item in sublist]
+    # found_key = break2.from_numbers_to_alphabet(best_shifts)
+    best_key_length=break2.find_best_key_length_based_on_ic(encrypted_text,break2.find_potential_key_lengths(encrypted_text,max_16_char_long_key))
+    print("best_key_length",best_key_length)
+    found_key=break2.find_best_key(encrypted_text,best_key_length)
     # Decrypt the text using the found key
     decrypted_text = encrypt.vigenere_decrypt(encrypted_text, found_key)
     
@@ -34,14 +34,14 @@ def test_break_cipher(text, key):
 
 
 key_3 = "bil"
-key_5 = "banan"
+key_5 = "admin"
 key_7 = "potatis"
 key_13 = "administrativ"
 key_16 = "datainspektionen"
 key_25 = "giftinformationscentralen"
 key_37 = "specialistsjuksköterskeutbildningarna"
 plain_text = "säkerhetsagentdeltadittuppdragbörjarvidångströmslaboratorietklnollsjutrenollinspekteraområdetnärahuvudingångenochhållutkikefterdenkodadesignalenefteratthafåttsignalenbegedigdiskrettillklubbenstockendärexaktkltvåettnollnollidetbakrerummetidentifieramåletmeddenrödabokenbytkodadedokumentochavslutakommunikationenvarytterstvaksammisstänktamotagentersnärvarobekräftadåtervändsäkerttilldinbasutanattdrauppmärksamhetkodnamnorion"
-
+plain_text = "detvarengångenbjörnsomhettebengtsomboddeutanförstadenienmysigskogprecisintillsjönibörjansommarlovetsåhadebjörnbestämtsigförattåkabåtmedsinaföräldrarochsinafyraäldresyskonmenbjörnvarinteförbereddattbåtenkundekapsejsaefterattdehadeåktbåtensålängeattdehadekommitutpåsjönmenplötsligensåhördebjörnenkraftigbrusomkomfrånsjönhanhadealdrighörtbrusomdetinnanochhanblevmycketräddmenhansyskonochföräldrarvarinteförskräcktautaniställetsåskrattadehansyskonochföräldraråtbrusetfrånsjönmenbjörnvarfortfarandeoroligförattbåtenkundekapsejsa"
 
 if __name__ == "__main__":
     test_break_cipher(plain_text, key_3)

@@ -205,7 +205,7 @@ def find_best_key_length_based_on_ic(text, potential_key_lengths):
 
         average_ic = total_ic / key_length
         ic_difference = abs(average_ic - ic_swedish)
-        # print(f"Key length: {key_length}, IC difference: {ic_difference}")
+        print(f"Key length: {key_length}, IC difference: {ic_difference}")
         if ic_difference < closest_ic_difference:
             closest_ic_difference = ic_difference
             best_key_length = key_length
@@ -289,6 +289,10 @@ def get_best_shifts_for_all_groups(text,max_16):
 
 """Check all divisors of the key length and compare which of the keys that gives the closest IC to the IC for the Swedish language"""
 
+# Function used to find the best key
+# Input: ciphertext, key length
+# Output: best key
+# Example: find_best_key("abc", 3) -> "abc"
 def find_best_key(ciphertext, key_length):
     # Find all divisors of the key length not including 1
     print(f"Key length: {key_length}")
@@ -304,30 +308,17 @@ def find_best_key(ciphertext, key_length):
         # Generate all possible keys
         possible_keys = generate_all_possible_keys(best_shifts)
         # Find the most likely decryption of the ciphertext
-        best_key, best_decryption, ic = find_most_likely_decryption(ciphertext, possible_keys)
+        found_key, best_decryption, ic = find_most_likely_decryption(ciphertext, possible_keys)
+        print(f"Divisor: {divisor}, IC: {ic}, Key: {found_key}")
         # Check if the IC for this key is better than the best IC so far
+        print(f"IC difference: {abs(ic - ic_swedish)}")
+        print(f"Best IC difference: {abs(best_ic - ic_swedish)}")
         if abs(ic - ic_swedish) < abs(best_ic - ic_swedish):
             best_ic = ic
-            best_key = best_key
+            best_key = found_key
     
     print(f"Best key: {best_key}")
     return best_key
-    
-
-        
-    # best_ic = 0
-    # best_key = None
-    # best_decryption = ""
-
-    # for key in possible_keys:
-    #     decrypted_text = vigenere_decrypt(ciphertext, key)
-    #     ic = calculate_ic(decrypted_text)
-    #     if abs(ic - ic_swedish) < abs(best_ic - ic_swedish):
-    #         best_ic = ic
-    #         best_key = from_numbers_to_alphabet(key)
-    #         best_decryption = decrypted_text
-
-    # return best_key, best_decryption, best_ic
 
 
 """Since the chi square values does not always give the correct shift, the chi square values for the three 
