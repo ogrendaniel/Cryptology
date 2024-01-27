@@ -4,6 +4,8 @@ from collections import Counter
 from functools import reduce
 import numpy as np
 import itertools
+import encrypt
+import create_dict
 
 
 # Known Swedish letter frequencies, from https://en.wikipedia.org/wiki/Letter_frequency#cite_note-30
@@ -319,6 +321,7 @@ def find_best_key(ciphertext, key_length):
     
     print(f"Best key: {best_key}")
     return best_key
+
 
 
 """Since the chi square values does not always give the correct shift, the chi square values for the three 

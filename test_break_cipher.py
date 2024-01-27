@@ -1,5 +1,6 @@
 import break2
 import encrypt
+import dictionary_attack as dict_attack
         
 def test_break_cipher(text, key):
     print(f"\nKey:{key} Size:{len(key)} Test")
@@ -33,21 +34,59 @@ def test_break_cipher(text, key):
         print(f"Key:{key}, test failed")
 
 
+
+def test_dict_attack(text, key):
+    print(f"\nKey:{key} Size:{len(key)} Test")
+    if len(key) > 16:
+        max_16_char_long_key = False
+    else:
+        max_16_char_long_key = True
+    # Encrypt the text using the Vigenère cipher
+    encrypted_text = encrypt.vigenere_encrypt(text, key)
+    
+    # Attempt to break the cipher
+    best_key_length=break2.find_best_key_length_based_on_ic(encrypted_text,break2.find_potential_key_lengths(encrypted_text,max_16_char_long_key))
+    print("best_key_length",best_key_length)
+    found_key=dict_attack.find_best_key_with_dictionary(encrypted_text,best_key_length)
+    if found_key==None:
+        print("No key found")
+        return
+    # Decrypt the text using the found key
+    decrypted_text = encrypt.vigenere_decrypt(encrypted_text, found_key)
+    
+    # Compare the found key with the original key
+    print(f"The found key is: {found_key} with length {len(found_key)}")
+    for i in range(len(key)):
+        if found_key[i] != key[i]:
+            print(f"The key differs at index {i} where the original key has {key[i]} and the found key has {found_key[i]}")
+
+    # Check if the decryption was successful
+    if text == decrypted_text:
+        print(f"Key:{key}, test passed")
+    else:
+        print(f"Key:{key}, test failed")
+
 key_3 = "bil"
-key_5 = "admin"
-key_7 = "potatis"
+key_5 = "kaffe"
+key_7 = "detektivarbete"
 key_13 = "administrativ"
 key_16 = "datainspektionen"
 key_25 = "giftinformationscentralen"
 key_37 = "specialistsjuksköterskeutbildningarna"
 plain_text = "säkerhetsagentdeltadittuppdragbörjarvidångströmslaboratorietklnollsjutrenollinspekteraområdetnärahuvudingångenochhållutkikefterdenkodadesignalenefteratthafåttsignalenbegedigdiskrettillklubbenstockendärexaktkltvåettnollnollidetbakrerummetidentifieramåletmeddenrödabokenbytkodadedokumentochavslutakommunikationenvarytterstvaksammisstänktamotagentersnärvarobekräftadåtervändsäkerttilldinbasutanattdrauppmärksamhetkodnamnorion"
-plain_text = "detvarengångenbjörnsomhettebengtsomboddeutanförstadenienmysigskogprecisintillsjönibörjansommarlovetsåhadebjörnbestämtsigförattåkabåtmedsinaföräldrarochsinafyraäldresyskonmenbjörnvarinteförbereddattbåtenkundekapsejsaefterattdehadeåktbåtensålängeattdehadekommitutpåsjönmenplötsligensåhördebjörnenkraftigbrusomkomfrånsjönhanhadealdrighörtbrusomdetinnanochhanblevmycketräddmenhansyskonochföräldrarvarinteförskräcktautaniställetsåskrattadehansyskonochföräldraråtbrusetfrånsjönmenbjörnvarfortfarandeoroligförattbåtenkundekapsejsa"
-
+print("length of plain text",len(plain_text))
 if __name__ == "__main__":
-    test_break_cipher(plain_text, key_3)
-    test_break_cipher(plain_text, key_5)
-    test_break_cipher(plain_text, key_7)
-    test_break_cipher(plain_text, key_13)
-    test_break_cipher(plain_text, key_16)
-    test_break_cipher(plain_text, key_25)
-    test_break_cipher(plain_text, key_37)
+    # test_break_cipher(plain_text, key_3)
+    # test_break_cipher(plain_text, key_5)
+    # test_break_cipher(plain_text, key_7)
+    # test_break_cipher(plain_text, key_13)
+    # test_break_cipher(plain_text, key_16)
+    # test_break_cipher(plain_text, key_25)
+    # test_break_cipher(plain_text, key_37)
+    # test_dict_attack(plain_text, key_3)
+    # test_dict_attack(plain_text, key_5)
+    test_dict_attack(plain_text, key_7)
+    # test_dict_attack(plain_text, key_13)
+    # test_dict_attack(plain_text, key_16)
+    # test_dict_attack(plain_text, key_25)
+    # test_dict_attack(plain_text, key_37)
