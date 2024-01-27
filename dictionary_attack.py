@@ -40,7 +40,12 @@ def find_best_key_with_dictionary(ciphertext, key_length):
         print("Key length not in swedish_words")
         return None
     else:
-        possible_keys=swedish_words[best_key_length] 
+        # possible_keys=swedish_words[best_key_length] 
+        possible_keys = []
+        for words_list in swedish_words.values():
+            for word in words_list:
+                possible_keys.append(word)
+
         
         found_key, best_decryption, ic = find_most_likely_decryption_with_dictionary(ciphertext, possible_keys)
         return found_key

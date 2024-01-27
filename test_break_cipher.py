@@ -68,13 +68,12 @@ def test_dict_attack(text, key):
 
 key_3 = "bil"
 key_5 = "kaffe"
-key_7 = "detektivarbete"
-key_13 = "administrativ"
+key_7 = "potatis"
+key_13 = "sjuksköterska"
 key_16 = "datainspektionen"
 key_25 = "giftinformationscentralen"
 key_37 = "specialistsjuksköterskeutbildningarna"
 plain_text = "säkerhetsagentdeltadittuppdragbörjarvidångströmslaboratorietklnollsjutrenollinspekteraområdetnärahuvudingångenochhållutkikefterdenkodadesignalenefteratthafåttsignalenbegedigdiskrettillklubbenstockendärexaktkltvåettnollnollidetbakrerummetidentifieramåletmeddenrödabokenbytkodadedokumentochavslutakommunikationenvarytterstvaksammisstänktamotagentersnärvarobekräftadåtervändsäkerttilldinbasutanattdrauppmärksamhetkodnamnorion"
-print("length of plain text",len(plain_text))
 if __name__ == "__main__":
     # test_break_cipher(plain_text, key_3)
     # test_break_cipher(plain_text, key_5)
@@ -85,8 +84,8 @@ if __name__ == "__main__":
     # test_break_cipher(plain_text, key_37)
     # test_dict_attack(plain_text, key_3)
     # test_dict_attack(plain_text, key_5)
-    test_dict_attack(plain_text, key_7)
-    # test_dict_attack(plain_text, key_13)
+    # test_dict_attack(plain_text, key_7)
+    test_dict_attack(plain_text, key_13)
     # test_dict_attack(plain_text, key_16)
     # test_dict_attack(plain_text, key_25)
     # test_dict_attack(plain_text, key_37)
