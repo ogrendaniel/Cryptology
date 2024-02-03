@@ -61,23 +61,23 @@ def vigenere_decrypt(cipher_text, key):
 
     return plain_text
 
-# def find_trigrams_and_distances(text):
-#     trigrams = {}
-#     # Loop through the text to extract each sequence of three consecutive characters (trigrams)
-#     for i in range(len(text) - 2):
-#         trigram = text[i:i+3]  # Extract a trigram starting at the current position
-#         if trigram not in trigrams:
-#             trigrams[trigram] = []  # If this trigram is new, initialize an empty list for it
-#         trigrams[trigram].append(i)  # Append the current position (index) of the trigram
+def find_trigrams_and_distances(text):
+    trigrams = {}
+    # Loop through the text to extract each sequence of three consecutive characters (trigrams)
+    for i in range(len(text) - 2):
+        trigram = text[i:i+3]  # Extract a trigram starting at the current position
+        if trigram not in trigrams:
+            trigrams[trigram] = []  # If this trigram is new, initialize an empty list for it
+        trigrams[trigram].append(i)  # Append the current position (index) of the trigram
 
-#     distances = {}
-#     # Now, for each trigram, calculate the distances between its occurrences
-#     for trigram, positions in trigrams.items():
-#         if len(positions) > 1:  # Only process trigrams that occur more than once
-#             # Calculate the distance between consecutive occurrences of the trigram
-#             distances[trigram] = [positions[i] - positions[i-1] for i in range(1, len(positions))]
+    distances = {}
+    # Now, for each trigram, calculate the distances between its occurrences
+    for trigram, positions in trigrams.items():
+        if len(positions) > 1:  # Only process trigrams that occur more than once
+            # Calculate the distance between consecutive occurrences of the trigram
+            distances[trigram] = [positions[i] - positions[i-1] for i in range(1, len(positions))]
 
-#     return distances
+    return distances
 
 # Function used to find the distances between bigrams in a text
 # Input: text
@@ -112,7 +112,7 @@ def find_gcd_of_list(numbers):
 # Input: ciphertext
 # Output: list of potential key lengths
 def find_potential_key_lengths(ciphertext,max_16):
-    bigram_distances = find_bigrams_and_distances(ciphertext)
+    bigram_distances = find_trigrams_and_distances(ciphertext)
     gcd_counter = Counter()
 
     # Calculate GCDs for each bigram and count their frequencies
@@ -268,12 +268,15 @@ def find_best_shift_for_group(group, group_number):
        chisquare = sum((actual_freqs - np.roll(expected_freqs,i))**2 / np.roll(expected_freqs,i))
        chi_square_list.append(chisquare)
        chisquare = 0
-    # get the five best shifts which are the three smallest chi_square values indexes
-    best_shifts = np.argsort(chi_square_list)[:1]
-    # print(f"\nGroup number: {group_number}, best shifts: {best_shifts}")
+    # if the chi square value is above 30, we add the five best shifts to the list of best shifts
+    if min(chi_square_list) > 30: # TODO what is a good threshold?
+        best_shifts_for_group = np.argsort(chi_square_list)[:2]
+    else:
+        best_shifts_for_group = np.argsort(chi_square_list)[:1]
+    print(f"\nGroup number: {group_number}, best shifts: {np.argsort(chi_square_list)[:5]}, chi square values: {sorted(chi_square_list)[:5]}")
     # print(f"\nChi square values: {chi_square_list}")
     # best_shift = chi_square_list.index(min(chi_square_list))
-    return best_shifts
+    return best_shifts_for_group
 
 # Function used to find the best shifts for all groups of letters with the same shift
 # Input: text, max_16 as a boolean, if true only key lengths under 16 are considered
@@ -307,6 +310,7 @@ def find_best_key(ciphertext, key_length):
         groups = group_letters_by_shift(ciphertext, divisor)
         # Find the best shift for each group
         best_shifts = [find_best_shift_for_group(group, groups.index(group)) for group in groups]
+        print(f"Best shifts: {best_shifts}")
         # Generate all possible keys
         possible_keys = generate_all_possible_keys(best_shifts)
         # Find the most likely decryption of the ciphertext
